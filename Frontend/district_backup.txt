@@ -1,0 +1,1396 @@
+import React, { useEffect, useState } from 'react'
+import Navbar from '../components/Navbar'
+import Sidebar from '../components/Sidebar'
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+
+import '../styles/Dashboard.css'
+import '../styles/Navbar.css'
+import axios from 'axios';
+
+
+function Dashboard() {
+    const handle = useFullScreenHandle();
+
+    const [sideBarOpen, setSideBarOpen] = useState(true)
+    const [isMaximized, setIsMaximized] = useState(false)
+    const [citiesToken, setCitiesToken] = useState('')
+
+    useEffect(() => {
+        if(isMaximized){
+            handle.exit()
+        } else {
+            handle.enter()
+        }
+ 
+    }, [isMaximized])
+
+        //   const getAccessToken = async() => {
+    //     var config = {
+    //         method: 'get',
+    //         headers: {
+    //             "Accept": "application/json",
+    //             "api-token": "AuXnFjES43NqbdODZoc1anLtpO9op_9HsA7hqU56HJoxlbbNrMsUAzmsp6cqoZ0HhWQ",
+    //             "user-email": "abc@gmail.com",
+    //             "Access-Control-Allow-Origin": "*"
+    //         }
+    //       };
+    //     const res = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', config)
+
+    //     setCitiesToken(res.data.auth_token)
+    //   }
+
+    //   const getCities = async() => {
+    //     var config = {
+    //         headers: {
+    //             "Authorization": `Bearer ${citiesToken}`,
+    //             "Accept": "application/json",
+    //             "Access-Control-Allow-Origin": "*"
+    //         }
+    //       };
+    //     const res = await axios.get('https://www.universal-tutorial.com/api/countries/', config)
+    //     console.log(res)
+
+    //   }
+
+    //   if(citiesToken){
+    //     getCities()
+    //   }
+
+    //   useEffect(() => {
+    //     getAccessToken()
+    //   }, [])
+
+    const states = [
+        {id: 1, name: 'Andaman And Nicobar'},
+        { id: 2, name: 'Andhra Pradesh' },
+        { id: 3, name: 'Arunachal Pradesh' },
+        { id: 4, name: 'Assam' },
+        { id: 5, name: 'Bihar' },
+        { id: 6, name: 'Chhattisgarh' },
+        { id: 7, name: 'Delhi' },
+        { id: 8, name: 'Gujarat' },
+        { id: 9, name: 'Haryana' },
+        { id: 10, name: 'Himachal Pradesh' },
+        { id: 11, name: 'Jammu And Kashmir' },
+        { id: 12, name: 'Jharkhand' },
+        { id: 13, name: 'Karnataka' },
+        { id: 14, name: 'Lakshadweep' },
+        { id: 15, name: 'Madhya Pradesh' },
+        { id: 16, name: 'Maharashtra' },
+        { id: 17, name: 'Odisha' },
+        { id: 18, name: 'Puducherry' },
+        { id: 19, name: 'Punjab' },
+        { id: 20, name: 'Rajasthan' },
+        { id: 21, name: 'Tamil Nadu' },
+        { id: 22, name: 'Telangana' },
+        { id: 23, name: 'Tripura' },
+        { id: 24, name: 'Uttar Pradesh' },
+        { id: 25, name: 'Uttarakhand' },
+        { id: 26, name: 'West Bengal' },
+        { id: 27, name: 'Others' },
+    ]
+
+    const districts = [
+        
+        { id: 110, name: 'Delhi NCR-Gurgaon' },
+        { id: 111, name: 'East Delhi' },
+        { id: 112, name: 'Najafgarh' },
+        { id: 113, name: 'Prakasam' },
+        { id: 114, name: 'Sri Potti Sriramulu Nellore' },
+        { id: 115, name: 'Srikakulam' },
+        { id: 116, name: 'Visakhapatnam' },
+        { id: 117, name: 'Vizianagaram' },
+        { id: 118, name: 'West Godavari' },
+        { id: 119, name: 'YSR Kadapa' },
+        { id: 120, name: 'Changlang' },
+        { id: 121, name: 'Dibang Valley' },
+        { id: 122, name: 'Barpeta' },
+        { id: 123, name: 'Bishwanath' },
+        { id: 124, name: 'Bongaigaon' },
+        { id: 125, name: 'Cachar' },
+        { id: 126, name: 'Charaideo' },
+        { id: 127, name: 'Chirang' },
+        { id: 128, name: 'Dalgori' },
+        { id: 129, name: 'Darrang' },
+        { id: 130, name: 'Dhubri' },
+        { id: 131, name: 'Dibrugarh' },
+        { id: 132, name: 'Goalpara' },
+        { id: 133, name: 'Golaghat' },
+        { id: 134, name: 'Hailakandi' },
+        { id: 135, name: 'Hojai' },
+        { id: 136, name: 'Jorhat' },
+        { id: 137, name: 'Kamrup' },
+        { id: 138, name: 'Karimganj' },
+        { id: 139, name: 'Kokrajhar' },
+        { id: 140, name: 'Lakhimpur' },
+        { id: 141, name: 'Morigaon' },
+        { id: 142, name: 'Nagaon' },
+        { id: 143, name: 'Nalbari' },
+        { id: 144, name: 'Nawgong' },
+        { id: 145, name: 'Sibsagar' },
+        { id: 146, name: 'Sonitpur' },
+        { id: 147, name: 'Tinsukia' },
+        { id: 148, name: 'Tinsukia' },
+        { id: 149, name: 'Udalguri' },
+        { id: 150, name: 'Araria' },
+        { id: 151, name: 'Arwal' },
+        { id: 152, name: 'Aurangabad' },
+        { id: 153, name: 'Banka' },
+        { id: 154, name: 'Begusarai' },
+        { id: 155, name: 'Betiah' },
+        { id: 156, name: 'Bhabhua' },
+        { id: 157, name: 'Bhagalpur' },
+        { id: 158, name: 'Bhojpur' },
+        { id: 159, name: 'Buxar' },
+        { id: 160, name: 'Darbhanga' },
+        { id: 161, name: 'East Champaran' },
+        { id: 162, name: 'Gaya' },
+        { id: 163, name: 'Gopalganj' },
+        { id: 164, name: 'Jehanabad' },
+        { id: 165, name: 'Kaimur' },
+        { id: 166, name: 'Katihar' },
+        { id: 167, name: 'Khagaria' },
+        { id: 168, name: 'Kishanganj' },
+        { id: 169, name: 'Lakhisarai' },
+        { id: 170, name: 'Madhepura' },
+        { id: 171, name: 'Madhubani' },
+        { id: 172, name: 'Morang/Nepal' },
+        { id: 173, name: 'Motihari' },
+        { id: 174, name: 'Muzaffarpur' },
+        { id: 175, name: 'Nalanda' },
+        { id: 176, name: 'Nawada' },
+        { id: 177, name: 'Patna' },
+        { id: 178, name: 'Purnea' },
+        { id: 179, name: 'Purnia' },
+        { id: 180, name: 'Rohtas' },
+        { id: 181, name: 'Saharsa' },
+        { id: 182, name: 'Samastipur' },
+        { id: 183, name: 'Sheikhpura' },
+        { id: 184, name: 'Sheohar' },
+        { id: 185, name: 'Sitamarhi' },
+        { id: 186, name: 'Siwan' },
+        { id: 187, name: 'Sunsari/Nepal' },
+        { id: 188, name: 'Supaul' },
+        { id: 189, name: 'Vaishali' },
+        { id: 190, name: 'West Champaran' },
+        { id: 191, name: 'Ambikapur' },
+        { id: 192, name: 'Balod' },
+        { id: 193, name: 'Baloda Bazar' },
+        { id: 194, name: 'Balrampur' },
+        { id: 195, name: 'Bemetara' },
+        { id: 196, name: 'Bilaspur' },
+        { id: 197, name: 'Dhamtari' },
+        { id: 198, name: 'Durg' },
+        { id: 199, name: 'Gariyaband' },
+        { id: 200, name: 'Kabirdham (formerly Kawardha)' },
+        { id: 201, name: 'Nicobar'},
+        { id: 202, name: 'North And Middle Andaman' },
+        { id: 203, name: 'South Andaman' },
+        { id: 204, name: 'Anantapur' },
+        { id: 205, name: 'Chittoor' },
+        { id: 206, name: 'Cuddapah' },
+        { id: 207, name: 'East Godavari' },
+        { id: 208, name: 'Guntur' },
+        { id: 209, name: 'Kadapa' },
+        { id: 210, name: 'Krishna' },
+        { id: 211, name: 'Kurnool' },
+        { id: 212, name: 'Nellore' },
+        { id: 213, name: 'Prakasam' },
+        { id: 214, name: 'Sri Potti Sriramulu Nellore' },
+        { id: 215, name: 'Srikakulam' },
+        { id: 216, name: 'Visakhapatnam' },
+        { id: 217, name: 'Vizianagaram' },
+        { id: 218, name: 'West Godavari' },
+        { id: 219, name: 'YSR Kadapa' },
+        { id: 220, name: 'Changlang' },
+        { id: 221, name: 'Dibang Valley' },
+        { id: 222, name: 'Barpeta' },
+        { id: 223, name: 'Bishwanath' },
+        { id: 224, name: 'Bongaigaon' },
+        { id: 225, name: 'Cachar' },
+        { id: 226, name: 'Charaideo' },
+        { id: 227, name: 'Chirang' },
+        { id: 228, name: 'Dalgori' },
+        { id: 229, name: 'Darrang' },
+        { id: 230, name: 'Dhubri' },
+        { id: 231, name: 'Dibrugarh' },
+        { id: 232, name: 'Goalpara' },
+        { id: 233, name: 'Golaghat' },
+        { id: 234, name: 'Hailakandi' },
+        { id: 235, name: 'Hojai' },
+        { id: 236, name: 'Jorhat' },
+        { id: 237, name: 'Kamrup' },
+        { id: 238, name: 'Karimganj' },
+        { id: 239, name: 'Kokrajhar' },
+        { id: 240, name: 'Lakhimpur' },
+        { id: 241, name: 'Morigaon' },
+        { id: 242, name: 'Nagaon' },
+        { id: 243, name: 'Nalbari' },
+        { id: 244, name: 'Nawgong' },
+        { id: 245, name: 'Sibsagar' },
+        { id: 246, name: 'Sonitpur' },
+        { id: 247, name: 'Tinsukia' },
+        { id: 248, name: 'Tinsukia' },
+        { id: 249, name: 'Udalguri' },
+        { id: 250, name: 'Araria' },
+        { id: 251, name: 'Arwal' },
+        { id: 252, name: 'Aurangabad' },
+        { id: 253, name: 'Banka' },
+        { id: 254, name: 'Begusarai' },
+        { id: 255, name: 'Betiah' },
+        { id: 256, name: 'Bhabhua' },
+        { id: 257, name: 'Bhagalpur' },
+        { id: 258, name: 'Bhojpur' },
+        { id: 259, name: 'Buxar' },
+        { id: 260, name: 'Darbhanga' },
+        { id: 261, name: 'East Champaran' },
+        { id: 262, name: 'Gaya' },
+        { id: 263, name: 'Gopalganj' },
+        { id: 264, name: 'Jehanabad' },
+        { id: 265, name: 'Kaimur' },
+        { id: 266, name: 'Katihar' },
+        { id: 267, name: 'Khagaria' },
+        { id: 268, name: 'Kishanganj' },
+        { id: 269, name: 'Lakhisarai' },
+        { id: 270, name: 'Madhepura' },
+        { id: 271, name: 'Madhubani' },
+        { id: 272, name: 'Morang/Nepal' },
+        { id: 273, name: 'Motihari' },
+        { id: 274, name: 'Muzaffarpur' },
+        { id: 275, name: 'Nalanda' },
+        { id: 276, name: 'Nawada' },
+        { id: 277, name: 'Patna' },
+        { id: 278, name: 'Purnea' },
+        { id: 279, name: 'Purnia' },
+        { id: 280, name: 'Rohtas' },
+        { id: 281, name: 'Saharsa' },
+        { id: 282, name: 'Samastipur' },
+        { id: 283, name: 'Sheikhpura' },
+        { id: 284, name: 'Sheohar' },
+        { id: 285, name: 'Sitamarhi' },
+        { id: 286, name: 'Siwan' },
+        { id: 287, name: 'Sunsari/Nepal' },
+        { id: 288, name: 'Supaul' },
+        { id: 289, name: 'Vaishali' },
+        { id: 290, name: 'West Champaran' },
+        { id: 291, name: 'Ambikapur' },
+        { id: 292, name: 'Balod' },
+        { id: 293, name: 'Baloda Bazar' },
+        { id: 294, name: 'Balrampur' },
+        { id: 295, name: 'Bemetara' },
+        { id: 296, name: 'Bilaspur' },
+        { id: 297, name: 'Dhamtari' },
+        { id: 298, name: 'Durg' },
+        { id: 299, name: 'Gariyaband' },
+        { id: 300, name: 'Kabirdham (formerly Kawardha)' },
+        { id: 301, name: 'Nicobar'},
+        { id: 302, name: 'North And Middle Andaman' },
+        { id: 303, name: 'South Andaman' },
+        { id: 304, name: 'Anantapur' },
+        { id: 305, name: 'Chittoor' },
+        { id: 306, name: 'Cuddapah' },
+        { id: 307, name: 'East Godavari' },
+        { id: 308, name: 'Guntur' },
+        { id: 309, name: 'Kadapa' },
+        { id: 310, name: 'Krishna' },
+        { id: 311, name: 'Kurnool' },
+        { id: 312, name: 'Nellore' },
+        { id: 313, name: 'Prakasam' },
+        { id: 314, name: 'Sri Potti Sriramulu Nellore' },
+        { id: 315, name: 'Srikakulam' },
+        { id: 316, name: 'Visakhapatnam' },
+        { id: 317, name: 'Vizianagaram' },
+        { id: 318, name: 'West Godavari' },
+        { id: 319, name: 'YSR Kadapa' },
+        { id: 320, name: 'Changlang' },
+        { id: 321, name: 'Dibang Valley' },
+        { id: 322, name: 'Barpeta' },
+        { id: 323, name: 'Bishwanath' },
+        { id: 324, name: 'Bongaigaon' },
+        { id: 325, name: 'Cachar' },
+        { id: 326, name: 'Charaideo' },
+        { id: 327, name: 'Chirang' },
+        { id: 328, name: 'Dalgori' },
+        { id: 329, name: 'Darrang' },
+        { id: 330, name: 'Dhubri' },
+        { id: 331, name: 'Dibrugarh' },
+        { id: 332, name: 'Goalpara' },
+        { id: 333, name: 'Golaghat' },
+        { id: 334, name: 'Hailakandi' },
+        { id: 335, name: 'Hojai' },
+        { id: 336, name: 'Jorhat' },
+        { id: 337, name: 'Kamrup' },
+        { id: 338, name: 'Karimganj' },
+        { id: 339, name: 'Kokrajhar' },
+        { id: 340, name: 'Lakhimpur' },
+        { id: 341, name: 'Morigaon' },
+        { id: 342, name: 'Nagaon' },
+        { id: 343, name: 'Nalbari' },
+        { id: 344, name: 'Nawgong' },
+        { id: 345, name: 'Sibsagar' },
+        { id: 346, name: 'Sonitpur' },
+        { id: 347, name: 'Tinsukia' },
+        { id: 348, name: 'Tinsukia' },
+        { id: 349, name: 'Udalguri' },
+        { id: 350, name: 'Araria' },
+        { id: 351, name: 'Arwal' },
+        { id: 352, name: 'Aurangabad' },
+        { id: 353, name: 'Banka' },
+        { id: 354, name: 'Begusarai' },
+        { id: 355, name: 'Betiah' },
+        { id: 356, name: 'Bhabhua' },
+        { id: 357, name: 'Bhagalpur' },
+        { id: 358, name: 'Bhojpur' },
+        { id: 359, name: 'Buxar' },
+        { id: 360, name: 'Darbhanga' },
+        { id: 361, name: 'East Champaran' },
+        { id: 362, name: 'Gaya' },
+        { id: 363, name: 'Gopalganj' },
+        { id: 364, name: 'Jehanabad' },
+        { id: 365, name: 'Kaimur' },
+        { id: 366, name: 'Katihar' },
+        { id: 367, name: 'Khagaria' },
+        { id: 368, name: 'Kishanganj' },
+        { id: 369, name: 'Lakhisarai' },
+        { id: 370, name: 'Madhepura' },
+        { id: 371, name: 'Madhubani' },
+        { id: 372, name: 'Morang/Nepal' },
+        { id: 373, name: 'Motihari' },
+        { id: 374, name: 'Muzaffarpur' },
+        { id: 375, name: 'Nalanda' },
+        { id: 376, name: 'Nawada' },
+        { id: 377, name: 'Patna' },
+        { id: 378, name: 'Purnea' },
+        { id: 379, name: 'Purnia' },
+        { id: 380, name: 'Rohtas' },
+        { id: 381, name: 'Saharsa' },
+        { id: 382, name: 'Samastipur' },
+        { id: 383, name: 'Sheikhpura' },
+        { id: 384, name: 'Sheohar' },
+        { id: 385, name: 'Sitamarhi' },
+        { id: 386, name: 'Siwan' },
+        { id: 387, name: 'Sunsari/Nepal' },
+        { id: 388, name: 'Supaul' },
+        { id: 389, name: 'Vaishali' },
+        { id: 390, name: 'West Champaran' },
+        { id: 391, name: 'Ambikapur' },
+        { id: 392, name: 'Balod' },
+        { id: 393, name: 'Baloda Bazar' },
+        { id: 394, name: 'Balrampur' },
+        { id: 395, name: 'Bemetara' },
+        { id: 396, name: 'Bilaspur' },
+        { id: 397, name: 'Dhamtari' },
+        { id: 398, name: 'Durg' },
+        { id: 399, name: 'Gariyaband' },
+        { id: 400, name: 'Kabirdham (formerly Kawardha)' },
+    ]
+
+    
+
+    return (
+        <div className='dashboardContainer'>
+            {/* <FullScreen className='fullscreen' handle={handle}> */}
+                <Navbar sideBarOpen={sideBarOpen} setSideBarOpen={setSideBarOpen} isMaximized={isMaximized} setIsMaximized={setIsMaximized} />
+                <div className='mainBody'>
+                    <div className='dashboardBodyWrapper'>
+                        {sideBarOpen && <Sidebar />}
+                        <div className='dashboardFormContainer'>
+                            <div className='mainPageBody'>
+                                <div className='pageWrapper'>
+                                    <div className='dashboardFormDiv'>
+                                        <div className='paddingDiv'>
+                                            <div className='inputListContainer'>                                                
+                                                    <div className='dhanukaHeading'>
+                                                        Dhanuka Farmer Validation CRM
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Mobile No: *</p>
+                                                            <input className='inputStyle'/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Ticket No.s: *</p>
+                                                            <input className='inputStyle'/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Reg Date: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Reg. Type: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>State: *</p>
+                                                            <select onChange={(e) => console.log(e.target.value)} className='inputStyle' id="state" name="state">
+                                                                <option value="">Select</option>
+                                                                {states.map((state) => (
+                                                                    <option value={state.id}>{state.name}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>District: *</p>
+                                                            <select className='inputStyle' id="district" name="district">
+                                                                <option value="">Select</option>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Tehsil: *</p>
+                                                            <select className='inputStyle' id="tehsil" name="tehsil">
+                                                                <option value="">Select</option>
+                                                                <option value="1">Car Nicobar</option>
+                                                                <option value="2">Mayabunder</option>
+                                                                <option value="3">Rangat</option>
+                                                                <option value="4">Ferrargunj</option>
+                                                                <option value="5">Port Blair</option>
+                                                                <option value="6">Agali</option>
+                                                                <option value="7">Amadagur</option>
+                                                                <option value="8">Amarapuram</option>
+                                                                <option value="9">Anantapur</option>
+                                                                <option value="10">Atmakur</option>
+                                                                <option value="11">Bathalapalle</option>
+                                                                <option value="12">Beluguppa</option>
+                                                                <option value="13">Bommanahal</option>
+                                                                <option value="14">Brahmasamudram</option>
+                                                                <option value="15">Bukkapatnam</option>
+                                                                <option value="16">Bukkaraya Samudram</option>
+                                                                <option value="17">Chennekothapalle</option>
+                                                                <option value="18">Chilamathur</option>
+                                                                <option value="19">Chippagiri-1</option>
+                                                                <option value="20">D.Hirehal</option>
+                                                                <option value="21">Dharmavaram</option>
+                                                                <option value="22">Gandlapenta</option>
+                                                                <option value="23">Garladinne</option>
+                                                                <option value="24">Gooty</option>
+                                                                <option value="25">Gorantla</option>
+                                                                <option value="26">Gudibanda</option>
+                                                                <option value="27">Gummagatta</option>
+                                                                <option value="28">Guntakal</option>
+                                                                <option value="29">Hindupur</option>
+                                                                <option value="30">Kadiri</option>
+                                                                <option value="31">Kalyandurg</option>
+                                                                <option value="32">Kambadur</option>
+                                                                <option value="33">Kanaganapalle</option>
+                                                                <option value="34">Kanekal</option>
+                                                                <option value="35">Kothacheruvu</option>
+                                                                <option value="36">Kudair</option>
+                                                                <option value="37">Kundurpi</option>
+                                                                <option value="38">Lepakshi</option>
+                                                                <option value="39">Madakasira</option>
+                                                                <option value="40">Mudigubba</option>
+                                                                <option value="41">Nallacheruvu</option>
+                                                                <option value="42">Nallamada</option>
+                                                                <option value="43">Nambulipulikunta</option>
+                                                                <option value="44">Narpala</option>
+                                                                <option value="45">Obuladevaracheruvu</option>
+                                                                <option value="46">Pamidi</option>
+                                                                <option value="47">Parigi</option>
+                                                                <option value="48">Peddapappur</option>
+                                                                <option value="49">Peddavadugur</option>
+                                                                <option value="50">Penukonda</option>
+                                                                <option value="51">Putlur</option>
+                                                                <option value="52">Puttaparthi</option>
+                                                                <option value="53">R.S Kondapuram</option>
+                                                                <option value="54">Ramagiri</option>
+                                                                <option value="55">Raptadu</option>
+                                                                <option value="56">Rayadurg</option>
+                                                                <option value="57">Roddam</option>
+                                                                <option value="58">Rolla</option>
+                                                                <option value="59">Settur</option>
+                                                                <option value="60">Singanamala</option>
+                                                                <option value="61">Somandepalle</option>
+                                                                <option value="62">Tadimarri</option>
+                                                                <option value="63">Tadpatri</option>
+                                                                <option value="64">Talupula</option>
+                                                                <option value="65">Tanakal</option>
+                                                                <option value="66">Thadipathri</option>
+                                                                <option value="67">Uravakonda</option>
+                                                                <option value="68">Vajrakarur</option>
+                                                                <option value="69">Vidapanakal</option>
+                                                                <option value="70">Yadiki</option>
+                                                                <option value="71">Yellanur</option>
+                                                            </select>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Village: *</p>
+                                                            <select className='inputStyle' id="village" name="village">
+                                                                <option value="">Select</option>
+                                                            </select>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Pin Code: *</p>
+                                                            <input className='inputStyle'/>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Sale S1: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Sale S2: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Sale S3: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Farmer Name: *</p>
+                                                            <input className='inputStyle'/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Crop 1: *</p>
+                                                            <select className='inputStyle' id="crop1" name="crop1">
+                                                                <option value="">Select</option>
+                                                                <option value="1">Apple</option>
+                                                                <option value="2">Banana</option>
+                                                                <option value="3">Barseem</option>
+                                                                <option value="4">Basmati</option>
+                                                                <option value="5">Beans</option>
+                                                                <option value="6">Bengal Gram</option>
+                                                                <option value="7">Betel Vine</option>
+                                                                <option value="8">Bitter Gourd</option>
+                                                                <option value="9">Bitter Gourd -1</option>
+                                                                <option value="10">Black Gram</option>
+                                                                <option value="11">Brinjal</option>
+                                                                <option value="12">Cardamom</option>
+                                                                <option value="13">Carrot</option>
+                                                                <option value="14">Chilli</option>
+                                                                <option value="15">Chrysanthemum</option>
+                                                                <option value="16">Citrus</option>
+                                                                <option value="17">Cole Crop</option>
+                                                                <option value="18">Coriander</option>
+                                                                <option value="19">Cotton</option>
+                                                                <option value="20">Cow Pea(Pulses)</option>
+                                                                <option value="21">Cucumber</option>
+                                                                <option value="22">Cucurbits</option>
+                                                                <option value="23">Cumin</option>
+                                                                <option value="24">Curry leaf</option>
+                                                                <option value="25">Fennel</option>
+                                                                <option value="26">Floriculture Other Than Rose</option>
+                                                                <option value="27">Garlic</option>
+                                                                <option value="28">Ginger</option>
+                                                                <option value="29">Gram</option>
+                                                                <option value="30">Grapes</option>
+                                                                <option value="31">Green Beans(Pulses)</option>
+                                                                <option value="32">Green gram</option>
+                                                                <option value="33">Groundnut</option>
+                                                                <option value="34">Guar</option>
+                                                                <option value="35">Jowar</option>
+                                                                <option value="36">Jute</option>
+                                                                <option value="37">Lawn</option>
+                                                                <option value="38">Lentil</option>
+                                                                <option value="39">Litchi</option>
+                                                                <option value="40">Maize</option>
+                                                                <option value="41">Mango</option>
+                                                                <option value="42">Marigold</option>
+                                                                <option value="43">Mentha</option>
+                                                                <option value="44">Millets</option>
+                                                                <option value="45">Mustard</option>
+                                                                <option value="46">Okra</option>
+                                                                <option value="47">Onion</option>
+                                                                <option value="48">Other Fruits</option>
+                                                                <option value="49">Other Pulses</option>
+                                                                <option value="50">Paddy</option>
+                                                                <option value="51">Papaya</option>
+                                                                <option value="52">Pea</option>
+                                                                <option value="53">Pea (Seed Treatment)</option>
+                                                                <option value="54">Pigeon Pea</option>
+                                                                <option value="55">Pointed Gourd</option>
+                                                                <option value="56">Pomegranate</option>
+                                                                <option value="57">Potato</option>
+                                                                <option value="58">Potato( Seed Treatment)</option>
+                                                                <option value="59">Pulses</option>
+                                                                <option value="60">Red Gram</option>
+                                                                <option value="61">Rose</option>
+                                                                <option value="62">Sesame</option>
+                                                                <option value="63">Soyabean</option>
+                                                                <option value="64">Strawberry</option>
+                                                                <option value="65">Sugarcane</option>
+                                                                <option value="66">Sugarcane Planting</option>
+                                                                <option value="67">Sugarcane Ratoon</option>
+                                                                <option value="68">Sunflower</option>
+                                                                <option value="69">Tapioca</option>
+                                                                <option value="70">Tea</option>
+                                                                <option value="71">Tobacco</option>
+                                                                <option value="72">Tobbaco</option>
+                                                                <option value="73">Tomato</option>
+                                                                <option value="74">Tuar</option>
+                                                                <option value="75">Turmeric</option>
+                                                                <option value="76">Vegetables - Group</option>
+                                                                <option value="77">Watermelon</option>
+                                                                <option value="78">Wheat</option>
+                                                            </select>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Product 1: *</p>
+                                                            <select className='inputStyle' id="product1" name="product1">
+                                                                <option value="">Select</option>
+                                                                <option value="1">Nozzle -Targa Super</option>
+                                                                <option value="2">Wetcit</option>
+                                                                <option value="3">Mycore</option>
+                                                                <option value="4">Lustre</option>
+                                                                <option value="5">Markar Super</option>
+                                                                <option value="6">Maxyld</option>
+                                                                <option value="7">Dhanzyme Gold Gr.</option>
+                                                                <option value="8">Dhanvarsha</option>
+                                                                <option value="9">Cursor</option>
+                                                                <option value="10">Suelo</option>
+                                                                <option value="11">Wetcit</option>
+                                                                <option value="12">Mycore</option>
+                                                                <option value="13">Godiwa Super</option>
+                                                                <option value="14">Nozzle -Targa Super</option>
+                                                                <option value="15">Maxyld</option>
+                                                                <option value="16">Kasu-B</option>
+                                                                <option value="17">Dhanzyme Gold Gr.</option>
+                                                                <option value="18">Dhanvarsha</option>
+                                                                <option value="19">Mycore</option>
+                                                                <option value="20">Wetcit</option>
+                                                                <option value="21">Maxyld</option>
+                                                                <option value="22">Dhanvarsha</option>
+                                                                <option value="23">Nozzle -Targa Super</option>
+                                                                <option value="24">Mycore</option>
+                                                                <option value="25">D-One</option>
+                                                                <option value="26">Mortar</option>
+                                                                <option value="27">Lustre</option>
+                                                                <option value="28">Markar Super</option>
+                                                                <option value="29">Kasu-B</option>
+                                                                <option value="44">Dhanzyme Gold Gr.</option>
+                                                                <option value="43">Maxyld</option>
+                                                                <option value="42">Nozzle -Targa Super</option>
+                                                                <option value="41">Mycore</option>
+                                                                <option value="40">Wetcit</option>
+                                                                <option value="30">Dhanzyme Gold Gr.
+        </option>
+                                                                <option value="31">Chempa</option>
+                                                                <option value="32">Caldan 4G</option>
+                                                                <option value="45">Dhanvarsha</option>
+                                                                <option value="46">Wetcit</option>
+                                                                <option value="47">Mycore</option>
+                                                                <option value="48">Godiwa Super</option>
+                                                                <option value="49">Lustre</option>
+                                                                <option value="50">Nozzle -Targa Super</option>
+                                                                <option value="51">Vitavax Power</option>
+                                                                <option value="52">Wetcit</option>
+                                                                <option value="53">Mycore</option>
+                                                                <option value="54">Nissodium</option>
+                                                                <option value="55">Nozzle -Targa Super</option>
+                                                                <option value="56">Maxyld</option>
+                                                                <option value="57">Dhanzyme Gold Gr.</option>
+                                                                <option value="58">Dhanvarsha</option>
+                                                                <option value="59">Nissodium</option>
+                                                                <option value="60">Kirari</option>
+                                                                <option value="61">Mycore</option>
+                                                                <option value="62">Nozzle -Targa Super</option>
+                                                                <option value="63">Dhanvarsha</option>
+                                                                <option value="64">Wetcit</option>
+                                                                <option value="65">Nissodium</option>
+                                                                <option value="66">Maxyld</option>
+                                                                <option value="67">Dhanzyme Gold Gr.</option>
+                                                                <option value="68">Cover Liquid</option>
+                                                                <option value="69">Tornado</option>
+                                                                <option value="70">Wetcit</option>
+                                                                <option value="71">Mycore</option>
+                                                                <option value="72">Godiwa Super</option>
+                                                                <option value="73">Nissodium</option>
+                                                                <option value="74">Lustre</option>
+                                                                <option value="75">Nozzle -Targa Super</option>
+                                                                <option value="76">Vitavax Power</option>
+                                                                <option value="77">Targa Super</option>
+                                                                <option value="78">Sakura</option>
+                                                                <option value="79">Maxyld</option>
+                                                                <option value="80">Kasu-B</option>
+                                                                <option value="81">Dhanzyme Gold Gr.</option>
+                                                                <option value="82">Dhanvarsha</option>
+                                                                <option value="83">Cursor</option>
+                                                                <option value="84">Cover Liquid</option>
+                                                                <option value="85">Decide</option>
+                                                                <option value="86">Mortar</option>
+                                                                <option value="87">Wetcit</option>
+                                                                <option value="88">Mycore</option>
+                                                                <option value="89">Nozzle -Targa Super</option>
+                                                                <option value="90">Targa Super</option>
+                                                                <option value="91">Sakura</option>
+                                                                <option value="92">Maxyld</option>
+                                                                <option value="93">Largo</option>
+                                                                <option value="94">Foster</option>
+                                                                <option value="95">Dhanzyme Gold Gr.</option>
+                                                                <option value="96">Dhanvarsha</option>
+                                                                <option value="97">Cover Liquid</option>
+                                                                <option value="98">Bullon</option>
+                                                                <option value="99">Wetcit</option>
+                                                                <option value="100">Mycore</option>
+                                                                <option value="101">Nozzle -Targa Super</option>
+                                                                <option value="102">Maxyld</option>
+                                                                <option value="103">Dhanzyme Gold Gr.</option>
+                                                                <option value="104">Dhanvarsha</option>
+                                                                <option value="105">Wetcit</option>
+                                                                <option value="106">Mycore</option>
+                                                                <option value="107">Nozzle -Targa Super</option>
+                                                                <option value="108">Sakura</option>
+                                                                <option value="109">Maxyld</option>
+                                                                <option value="110">Dhanzyme Gold Gr.</option>
+                                                                <option value="111">Dhanvarsha</option>
+                                                                <option value="112">Decide</option>
+                                                                <option value="113">Mortar</option>
+                                                                <option value="114">Decide-Trials</option>
+                                                                <option value="115">Suelo</option>
+                                                                <option value="116">Wetcit</option>
+                                                                <option value="117">Mycore</option>
+                                                                <option value="118">Godiwa Super</option>
+                                                                <option value="119">Nissodium</option>
+                                                                <option value="120">D-One</option>
+                                                                <option value="121">Lustre</option>
+                                                                <option value="122">Conika</option>
+                                                                <option value="123">Nozzle -Targa Super</option>
+                                                                <option value="124">Targa Super</option>
+                                                                <option value="125">Sakura</option>
+                                                                <option value="126">Maxyld</option>
+                                                                <option value="127">Largo</option>
+                                                                <option value="128">Kasu-B</option>
+                                                                <option value="129">Dhanzyme Gold Gr.</option>
+                                                                <option value="130">Dhanvarsha</option>
+                                                                <option value="131">Cursor</option>
+                                                                <option value="132">Cover Liquid</option>
+                                                                <option value="133">Bullon</option>
+                                                                <option value="134">Nissodium</option>
+                                                                <option value="135">Wetcit</option>
+                                                                <option value="136">Mycore</option>
+                                                                <option value="137">D-One</option>
+                                                                <option value="138">Conika</option>
+                                                                <option value="139">Nozzle -Targa Super</option>
+                                                                <option value="140">Bullon</option>
+                                                                <option value="141">Maxyld</option>
+                                                                <option value="142">Kasu-B</option>
+                                                                <option value="143">Dhanzyme Gold Gr.</option>
+                                                                <option value="144">Dhanvarsha</option>
+                                                                <option value="145">Wetcit</option>
+                                                                <option value="146">Mycore</option>
+                                                                <option value="147">D-One</option>
+                                                                <option value="148">Mortar</option>
+                                                                <option value="149">Conika</option>
+                                                                <option value="150">Nozzle -Targa Super</option>
+                                                                <option value="151">Sakura</option>
+                                                                <option value="152">Maxyld</option>
+                                                                <option value="153">Kasu-B</option>
+                                                                <option value="154">Dhanzyme Gold Gr.</option>
+                                                                <option value="155">Dhanvarsha</option>
+                                                                <option value="156">Cover Liquid</option>
+                                                                <option value="157">Wetcit</option>
+                                                                <option value="158">Mycore</option>
+                                                                <option value="159">Nissodium</option>
+                                                                <option value="160">D-One</option>
+                                                                <option value="161">Lustre</option>
+                                                                <option value="162">Conika</option>
+                                                                <option value="163">Nozzle -Targa Super</option>
+                                                                <option value="164">Sakura</option>
+                                                                <option value="165">Vitavax Power</option>
+                                                                <option value="166">Maxyld</option>
+                                                                <option value="167">Dhanzyme Gold Gr.</option>
+                                                                <option value="168">Dhanvarsha</option>
+                                                                <option value="169">Decide</option>
+                                                                <option value="170">Wetcit</option>
+                                                                <option value="171">Mycore</option>
+                                                                <option value="172">D-One</option>
+                                                                <option value="173">Conika</option>
+                                                                <option value="174">Sempra</option>
+                                                                <option value="175">Nozzle -Targa Super</option>
+                                                                <option value="176">Dozo Maxx</option>
+                                                                <option value="177">Vitavax Power</option>
+                                                                <option value="178">Targa Super</option>
+                                                                <option value="179">Sakura</option>
+                                                                <option value="180">Markar Super</option>
+                                                                <option value="181">Maxyld</option>
+                                                                <option value="182">Largo</option>
+                                                                <option value="183">Dhanzyme Gold Gr.</option>
+                                                                <option value="184">Dhanvarsha</option>
+                                                                <option value="185">Cover Liquid</option>
+                                                                <option value="186">Bullon</option>
+                                                                <option value="187">Largo + EM1</option>
+                                                                <option value="188">Kirari</option>
+                                                                <option value="189">Decide</option>
+                                                                <option value="190">Wetcit</option>
+                                                                <option value="191">Mycore</option>
+                                                                <option value="192">Godiwa Super</option>
+                                                                <option value="193">Nissodium</option>
+                                                                <option value="194">Mortar</option>
+                                                                <option value="195">Lustre</option>
+                                                                <option value="196">Conika</option>
+                                                                <option value="197">Nozzle -Targa Super</option>
+                                                                <option value="198">Kirari</option>
+                                                                <option value="199">Largo</option>
+                                                                <option value="200">Targa Super</option>
+                                                                <option value="201">Sakura</option>
+                                                                <option value="202">Maxyld</option>
+                                                                <option value="203">Foster</option>
+                                                                <option value="204">Dhanzyme Gold Gr.</option>
+                                                                <option value="205">Dhanvarsha</option>
+                                                                <option value="206">Cursor</option>
+                                                                <option value="207">Wetcit</option>
+                                                                <option value="208">Mycore</option>
+                                                                <option value="209">Godiwa Super</option>
+                                                                <option value="210">Nissodium</option>
+                                                                <option value="211">D-One</option>
+                                                                <option value="212">Lustre</option>
+                                                                <option value="213">Conika</option>
+                                                                <option value="214">Nozzle -Targa Super</option>
+                                                                <option value="215">Sakura</option>
+                                                                <option value="216">Maxyld</option>
+                                                                <option value="217">Dhanzyme Gold Gr.</option>
+                                                                <option value="218">Dhanvarsha</option>
+                                                                <option value="219">Cursor</option>
+                                                                <option value="220">Wetcit</option>
+                                                                <option value="221">Targa Super</option>
+                                                                <option value="222">Mycore</option>
+                                                                <option value="223">Mycore</option>
+                                                                <option value="224">Godiwa Super</option>
+                                                                <option value="225">Dhanvarsha</option>
+                                                                <option value="226">Maxyld</option>
+                                                                <option value="227">Suelo</option>
+                                                                <option value="228">Wetcit</option>
+                                                                <option value="229">Mycore</option>
+                                                                <option value="230">Godiwa Super</option>
+                                                                <option value="231">Nozzle -Targa Super</option>
+                                                                <option value="232">Largo</option>
+                                                                <option value="233">Maxyld</option>
+                                                                <option value="234">Foster</option>
+                                                                <option value="235">Dhanvarsha</option>
+                                                                <option value="236">One-kill</option>
+                                                                <option value="237">Wetcit</option>
+                                                                <option value="238">Mycore</option>
+                                                                <option value="239">Lustre</option>
+                                                                <option value="240">Conika</option>
+                                                                <option value="241">Nozzle -Targa Super</option>
+                                                                <option value="242">Dhanvarsha</option>
+                                                                <option value="243">Maxyld</option>
+                                                                <option value="244">Largo</option>
+                                                                <option value="245">Vitavax Power</option>
+                                                                <option value="246">Targa Super</option>
+                                                                <option value="247">Sakura</option>
+                                                                <option value="248">Kasu-B</option>
+                                                                <option value="249">Dhanzyme Gold Gr.</option>
+                                                                <option value="250">Caldan 4G</option>
+                                                                <option value="251">Nozzle -Targa Super</option>
+                                                                <option value="252">Dhanvarsha</option>
+                                                                <option value="253">Conika</option>
+                                                                <option value="254">Nozzle -Targa Super</option>
+                                                                <option value="255">Largo</option>
+                                                                <option value="256">Vitavax Power</option>
+                                                                <option value="257">Maxyld</option>
+                                                                <option value="258">Dhanzyme Gold Gr.</option>
+                                                                <option value="259">Dhanvarsha</option>
+                                                                <option value="260">Cover Liquid</option>
+                                                                <option value="261">Wetcit</option>
+                                                                <option value="262">Mycore</option>
+                                                                <option value="263">Nissodium</option>
+                                                                <option value="264">Conika</option>
+                                                                <option value="265">Nozzle -Targa Super</option>
+                                                                <option value="266">Largo</option>
+                                                                <option value="267">Kirari</option>
+                                                                <option value="268">Maxyld</option>
+                                                                <option value="269">Kasu-B</option>
+                                                                <option value="270">Foster</option>
+                                                                <option value="271">Dhanzyme Gold Gr.</option>
+                                                                <option value="272">Dhanvarsha</option>
+                                                                <option value="273">Cursor</option>
+                                                                <option value="274">Largo + EM1</option>
+                                                                <option value="275">Tornado</option>
+                                                                <option value="276">Wetcit</option>
+                                                                <option value="277">Mycore</option>
+                                                                <option value="278">Lustre</option>
+                                                                <option value="279">Nozzle -Targa Super</option>
+                                                                <option value="280">Vitavax Power</option>
+                                                                <option value="281">Maxyld</option>
+                                                                <option value="282">Kasu-B</option>
+                                                                <option value="283">Dhanvarsha</option>
+                                                                <option value="284">Cover Liquid</option>
+                                                                <option value="285">Tornado</option>
+                                                                <option value="286">Wetcit</option>
+                                                                <option value="287">Mycore</option>
+                                                                <option value="288">Godiwa Super</option>
+                                                                <option value="289">Lustre</option>
+                                                                <option value="290">Conika</option>
+                                                                <option value="291">Nozzle -Targa Super</option>
+                                                                <option value="292">Dabooch</option>
+                                                                <option value="293">Vitavax Power</option>
+                                                                <option value="294">Targa Super</option>
+                                                                <option value="295">Sakura</option>
+                                                                <option value="296">Maxyld</option>
+                                                                <option value="297">Dhanzyme Gold Gr.</option>
+                                                                <option value="298">Dhanvarsha</option>
+                                                                <option value="299">Cover Liquid</option>
+                                                                <option value="300">Wetcit</option>
+                                                                <option value="301">Mycore</option>
+                                                                <option value="302">Maxyld</option>
+                                                                <option value="303">Dhanzyme Gold Gr.</option>
+                                                                <option value="304">Dhanvarsha</option>
+                                                                <option value="305">Nozzle -Targa Super</option>
+                                                                <option value="306">D-One</option>
+                                                                <option value="307">Maxyld</option>
+                                                                <option value="308">Dhanvarsha</option>
+                                                                <option value="309">Largo</option>
+                                                                <option value="310">Targa Super</option>
+                                                                <option value="311">Wetcit</option>
+                                                                <option value="312">Mycore</option>
+                                                                <option value="313">Sakura</option>
+                                                                <option value="314">Maxyld</option>
+                                                                <option value="315">Dhanzyme Gold Gr.</option>
+                                                                <option value="316">Dhanvarsha</option>
+                                                                <option value="317">Sempra</option>
+                                                                <option value="318">Dhanvarsha</option>
+                                                                <option value="319">Wetcit</option>
+                                                                <option value="320">Mycore</option>
+                                                                <option value="321">Nozzle -Targa Super</option>
+                                                                <option value="322">Maxyld</option>
+                                                                <option value="323">Dhanzyme Gold Gr.</option>
+                                                                <option value="324">Dhanvarsha</option>
+                                                                <option value="325">Cornex-Trials</option>
+                                                                <option value="326">Wetcit</option>
+                                                                <option value="327">Mycore</option>
+                                                                <option value="328">Godiwa Super</option>
+                                                                <option value="329">Sempra</option>
+                                                                <option value="330">Nozzle -Targa Super</option>
+                                                                <option value="331">Cornex</option>
+                                                                <option value="332">Maxyld</option>
+                                                                <option value="333">Largo</option>
+                                                                <option value="334">Dhanzyme Gold Gr.</option>
+                                                                <option value="335">Dhanvarsha</option>
+                                                                <option value="336">Cover Liquid</option>
+                                                                <option value="337">Wetcit</option>
+                                                                <option value="338">Mycore</option>
+                                                                <option value="339">Nissodium</option>
+                                                                <option value="340">D-One</option>
+                                                                <option value="341">Nozzle -Targa Super</option>
+                                                                <option value="342">Largo</option>
+                                                                <option value="343">Maxyld</option>
+                                                                <option value="344">Kasu-B</option>
+                                                                <option value="345">Dhanzyme Gold Gr.</option>
+                                                                <option value="346">Dhanvarsha</option>
+                                                                <option value="347">Cursor</option>
+                                                                <option value="348">Nissodium</option>
+                                                                <option value="349">Wetcit</option>
+                                                                <option value="350">Mycore</option>
+                                                                <option value="351">Targa Super</option>
+                                                                <option value="352">Sakura</option>
+                                                                <option value="353">Maxyld</option>
+                                                                <option value="354">Dhanzyme Gold Gr.</option>
+                                                                <option value="355">Dhanvarsha</option>
+                                                                <option value="356">Wetcit</option>
+                                                                <option value="357">Mycore</option>
+                                                                <option value="358">Maxyld</option>
+                                                                <option value="359">Dhanzyme Gold Gr.</option>
+                                                                <option value="360">Dhanvarsha</option>
+                                                                <option value="361">Wetcit</option>
+                                                                <option value="362">Mycore</option>
+                                                                <option value="363">D-One</option>
+                                                                <option value="364">Nozzle -Targa Super</option>
+                                                                <option value="365">Maxyld</option>
+                                                                <option value="366">Dhanzyme Gold Gr.</option>
+                                                                <option value="367">Dhanvarsha</option>
+                                                                <option value="368">Decide</option>
+                                                                <option value="369">Nissodium</option>
+                                                                <option value="370">Wetcit</option>
+                                                                <option value="371">Mycore</option>
+                                                                <option value="372">D-One</option>
+                                                                <option value="373">Mortar</option>
+                                                                <option value="374">Nozzle -Targa Super</option>
+                                                                <option value="375">Targa Super</option>
+                                                                <option value="376">Sakura</option>
+                                                                <option value="377">Maxyld</option>
+                                                                <option value="378">Largo</option>
+                                                                <option value="379">Foster</option>
+                                                                <option value="380">Dhanzyme Gold Gr.</option>
+                                                                <option value="381">Dhanvarsha</option>
+                                                                <option value="382">Cover Liquid</option>
+                                                                <option value="383">Bullon</option>
+                                                                <option value="384">Wetcit</option>
+                                                                <option value="385">Mycore</option>
+                                                                <option value="386">Godiwa Super</option>
+                                                                <option value="387">Lustre</option>
+                                                                <option value="388">Conika</option>
+                                                                <option value="389">Nozzle -Targa Super</option>
+                                                                <option value="390">One-kill</option>
+                                                                <option value="391">Largo</option>
+                                                                <option value="392">Targa Super</option>
+                                                                <option value="393">Sakura</option>
+                                                                <option value="394">Maxyld</option>
+                                                                <option value="395">Kasu-B</option>
+                                                                <option value="396">Dhanzyme Gold Gr.</option>
+                                                                <option value="397">Dhanvarsha</option>
+                                                                <option value="398">Caldan 4G</option>
+                                                                <option value="399">Maxyld</option>
+                                                                <option value="400">Dhanzyme Gold Gr.</option>
+                                                                <option value="401">Dhanvarsha</option>
+                                                                <option value="402">Maxyld</option>
+                                                                <option value="403">Dhanzyme Gold Gr.</option>
+                                                                <option value="404">Dhanvarsha</option>
+                                                                <option value="405">Dinka-Trials</option>
+                                                                <option value="406">Wetcit</option>
+                                                                <option value="407">Mycore</option>
+                                                                <option value="408">Godiwa Super</option>
+                                                                <option value="409">D-One</option>
+                                                                <option value="410">Mortar</option>
+                                                                <option value="411">Lustre</option>
+                                                                <option value="412">Nozzle -Targa Super</option>
+                                                                <option value="413">Apply</option>
+                                                                <option value="414">Markar Super</option>
+                                                                <option value="415">Maxyld</option>
+                                                                <option value="416">Kasu-B</option>
+                                                                <option value="417">Dhanzyme Gold Gr.</option>
+                                                                <option value="418">Dhanvarsha</option>
+                                                                <option value="419">Cursor</option>
+                                                                <option value="420">Cover Liquid</option>
+                                                                <option value="421">Chempa</option>
+                                                                <option value="422">Caldan 4G</option>
+                                                                <option value="423">Wetcit</option>
+                                                                <option value="424">Mycore</option>
+                                                                <option value="425">Maxyld</option>
+                                                                <option value="426">Kasu-B</option>
+                                                                <option value="427">Dhanzyme Gold Gr.</option>
+                                                                <option value="428">Dhanvarsha</option>
+                                                                <option value="429">Tornado</option>
+                                                                <option value="430">Vitavax Power</option>
+                                                                <option value="431">Wetcit</option>
+                                                                <option value="432">Mycore</option>
+                                                                <option value="433">Godiwa Super</option>
+                                                                <option value="434">Nissodium</option>
+                                                                <option value="435">Lustre</option>
+                                                                <option value="436">Nozzle -Targa Super</option>
+                                                                <option value="437">Largo</option>
+                                                                <option value="438">Cover Liquid</option>
+                                                                <option value="439">Targa Super</option>
+                                                                <option value="440">Sakura</option>
+                                                                <option value="441">Maxyld</option>
+                                                                <option value="442">Dhanzyme Gold Gr.</option>
+                                                                <option value="443">Dhanvarsha</option>
+                                                                <option value="444">Vitavax Power</option>
+                                                                <option value="445">Wetcit</option>
+                                                                <option value="446">Mycore</option>
+                                                                <option value="447">Godiwa Super</option>
+                                                                <option value="448">Nozzle -Targa Super</option>
+                                                                <option value="449">Largo</option>
+                                                                <option value="450">Vitavax Power</option>
+                                                                <option value="451">Maxyld</option>
+                                                                <option value="452">Dhanzyme Gold Gr.</option>
+                                                                <option value="453">Dhanvarsha</option>
+                                                                <option value="454">Cover Liquid</option>
+                                                                <option value="455">Nissodium</option>
+                                                                <option value="456">Wetcit</option>
+                                                                <option value="457">Mycore</option>
+                                                                <option value="458">Lustre</option>
+                                                                <option value="459">Conika</option>
+                                                                <option value="460">Nozzle -Targa Super</option>
+                                                                <option value="461">Maxyld</option>
+                                                                <option value="462">Kasu-B</option>
+                                                                <option value="463">Foster</option>
+                                                                <option value="464">Dhanzyme Gold Gr.</option>
+                                                                <option value="465">Dhanvarsha</option>
+                                                                <option value="466">Zenate-Trials</option>
+                                                                <option value="467">Suelo</option>
+                                                                <option value="468">Wetcit</option>
+                                                                <option value="469">Mycore</option>
+                                                                <option value="470">Godiwa Super</option>
+                                                                <option value="471">D-One</option>
+                                                                <option value="472">Conika</option>
+                                                                <option value="473">Nozzle -Targa Super</option>
+                                                                <option value="474">Kirari</option>
+                                                                <option value="475">Sakura</option>
+                                                                <option value="476">Vitavax Power</option>
+                                                                <option value="477">Maxyld</option>
+                                                                <option value="478">Kasu-B</option>
+                                                                <option value="479">Dhanzyme Gold Gr.</option>
+                                                                <option value="480">Dhanvarsha</option>
+                                                                <option value="481">Wetcit</option>
+                                                                <option value="482">Mycore</option>
+                                                                <option value="483">Maxyld</option>
+                                                                <option value="484">Dhanzyme Gold Gr.</option>
+                                                                <option value="485">Dhanvarsha</option>
+                                                                <option value="486">Lustre</option>
+                                                                <option value="487">Tornado</option>
+                                                                <option value="488">Lustre</option>
+                                                                <option value="489">Suelo</option>
+                                                                <option value="490">Kirari</option>
+                                                                <option value="491">Wetcit</option>
+                                                                <option value="492">Mycore</option>
+                                                                <option value="493">Nissodium</option>
+                                                                <option value="494">Sempra</option>
+                                                                <option value="495">Nozzle -Targa Super</option>
+                                                                <option value="496">Maxyld</option>
+                                                                <option value="497">Foster</option>
+                                                                <option value="498">Dhanzyme Gold Gr.</option>
+                                                                <option value="499">Dhanvarsha</option>
+                                                                <option value="500">Cursor</option>
+                                                                <option value="501">Wetcit</option>
+                                                                <option value="502">Mycore</option>
+                                                                <option value="503">Targa Super</option>
+                                                                <option value="504">Sakura</option>
+                                                                <option value="505">Maxyld</option>
+                                                                <option value="506">Dhanzyme Gold Gr.</option>
+                                                                <option value="507">Dhanvarsha</option>
+                                                                <option value="508">Tornado</option>
+                                                                <option value="509">Wetcit</option>
+                                                                <option value="510">Mycore</option>
+                                                                <option value="511">Godiwa Super</option>
+                                                                <option value="512">Lustre</option>
+                                                                <option value="513">Conika</option>
+                                                                <option value="514">Nozzle -Targa Super</option>
+                                                                <option value="515">Dabooch</option>
+                                                                <option value="516">Vitavax Power</option>
+                                                                <option value="517">Targa Super</option>
+                                                                <option value="518">Sakura</option>
+                                                                <option value="519">Maxyld</option>
+                                                                <option value="520">Maxsoy</option>
+                                                                <option value="521">Dhanzyme Gold Gr.</option>
+                                                                <option value="522">Dhanvarsha</option>
+                                                                <option value="523">Cover Liquid</option>
+                                                                <option value="524">Bullon</option>
+                                                                <option value="525">Nissodium</option>
+                                                                <option value="526">Maxyld</option>
+                                                                <option value="527">Dhanvarsha</option>
+                                                                <option value="528">Foster</option>
+                                                                <option value="529">Tizom-Trials</option>
+                                                                <option value="530">Godiwa Super</option>
+                                                                <option value="531">Maxyld</option>
+                                                                <option value="532">Wetcit</option>
+                                                                <option value="533">Mycore</option>
+                                                                <option value="534">Mortar</option>
+                                                                <option value="535">Conika</option>
+                                                                <option value="536">Sempra</option>
+                                                                <option value="537">Nozzle -Targa Super</option>
+                                                                <option value="538">Tozom</option>
+                                                                <option value="539">Godiwa Super</option>
+                                                                <option value="540">Markar Super</option>
+                                                                <option value="541">Maxyld</option>
+                                                                <option value="542">Dhanzyme Gold Gr.</option>
+                                                                <option value="543">Dhanvarsha</option>
+                                                                <option value="544">Cover Liquid</option>
+                                                                <option value="545">Caldan 4G</option>
+                                                                <option value="546">Bullon</option>
+                                                                <option value="547">Godiwa Super</option>
+                                                                <option value="548">Maxyld</option>
+                                                                <option value="549">Dhanzyme Gold Gr.</option>
+                                                                <option value="550">Dhanvarsha</option>
+                                                                <option value="551">Cover Liquid</option>
+                                                                <option value="552">Caldan 4G</option>
+                                                                <option value="553">Wetcit</option>
+                                                                <option value="554">Mycore</option>
+                                                                <option value="555">Maxyld</option>
+                                                                <option value="556">Dhanzyme Gold Gr.</option>
+                                                                <option value="557">Dhanvarsha</option>
+                                                                <option value="558">Wetcit</option>
+                                                                <option value="559">Targa Super</option>
+                                                                <option value="560">Mycore</option>
+                                                                <option value="561">Wetcit</option>
+                                                                <option value="562">Mycore</option>
+                                                                <option value="563">Nozzle -Targa Super</option>
+                                                                <option value="564">Markar Super</option>
+                                                                <option value="565">Maxyld</option>
+                                                                <option value="566">Foster
+        </option>
+                                                                <option value="567">Dhanzyme Gold Gr.</option>
+                                                                <option value="568">Wetcit</option>
+                                                                <option value="569">Mycore</option>
+                                                                <option value="570">D-One</option>
+                                                                <option value="571">Nozzle -Targa Super</option>
+                                                                <option value="572">Dhanvarsha</option>
+                                                                <option value="573">Maxyld</option>
+                                                                <option value="574">Dhanzyme Gold Gr.</option>
+                                                                <option value="575">Dhanvarsha</option>
+                                                                <option value="576">Decide</option>
+                                                                <option value="577">Zenate-Trials</option>
+                                                                <option value="578">Suelo</option>
+                                                                <option value="579">Wetcit</option>
+                                                                <option value="580">Mycore</option>
+                                                                <option value="581">Godiwa Super</option>
+                                                                <option value="582">Nissodium</option>
+                                                                <option value="583">Mortar</option>
+                                                                <option value="584">Lustre</option>
+                                                                <option value="585">Conika</option>
+                                                                <option value="586">Sempra</option>
+                                                                <option value="587">Nozzle -Targa Super</option>
+                                                                <option value="588">Kirari</option>
+                                                                <option value="589">Targa Super</option>
+                                                                <option value="590">Sakura</option>
+                                                                <option value="591">Maxyld</option>
+                                                                <option value="592">Largo</option>
+                                                                <option value="593">Kasu-B</option>
+                                                                <option value="594">Foster</option>
+                                                                <option value="595">Dhanzyme Gold Gr.</option>
+                                                                <option value="596">Dhanvarsha</option>
+                                                                <option value="597">Cursor</option>
+                                                                <option value="598">Cover Liquid</option>
+                                                                <option value="599">Bullon</option>
+                                                                <option value="600">Dhanvarsha</option>
+                                                                <option value="601">Wetcit</option>
+                                                                <option value="602">Mycore</option>
+                                                                <option value="603">Conika</option>
+                                                                <option value="604">Nozzle -Targa Super</option>
+                                                                <option value="605">Maxyld</option>
+                                                                <option value="606">Kasu-B</option>
+                                                                <option value="607">Dhanzyme Gold Gr.</option>
+                                                                <option value="608">Dhanvarsha</option>
+                                                                <option value="609">One-kill</option>
+                                                                <option value="610">Decide</option>
+                                                                <option value="611">Maxyld</option>
+                                                                <option value="612">Wetcit</option>
+                                                                <option value="613">Kirari</option>
+                                                                <option value="614">Godiwa Super</option>
+                                                                <option value="615">Nissodium</option>
+                                                                <option value="616">D-One</option>
+                                                                <option value="617">Mortar</option>
+                                                                <option value="618">Lustre</option>
+                                                                <option value="619">Conika</option>
+                                                                <option value="620">Mycore</option>
+                                                                <option value="621">Nozzle -Targa Super</option>
+                                                                <option value="622">Kirari</option>
+                                                                <option value="623">Nissodium</option>
+                                                                <option value="624">Dhanvarsha</option>
+                                                                <option value="625">Wetcit</option>
+                                                                <option value="626">Mycore</option>
+                                                                <option value="627">Godiwa Super</option>
+                                                                <option value="628">D-One</option>
+                                                                <option value="629">Lustre</option>
+                                                                <option value="630">Nozzle -Targa Super</option>
+                                                                <option value="631">Vitavax Power</option>
+                                                                <option value="632">Maxyld</option>
+                                                                <option value="633">Dhanzyme Gold Gr.</option>
+                                                                <option value="634">Dhanvarsha</option>
+                                                                <option value="635">Cursor</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Acre Age 1: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Crop 2: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Product 2: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Acre Age 2: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Crop 3: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                        <div className='inputVals'>
+                                                            <p>Product 3: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rowContainer'>
+                                                        <div className='inputVals'>
+                                                            <p>Acre Age 3: *</p>
+                                                            <input className='inputStyle rOnly' readOnly/>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <table className="tableContainer">
+                                                <tbody className='tableBody'>
+                                                    <tr>
+                                                        <td class="complaint">Query Raised: </td>
+                                                        <td class="complaint"><textarea class="form-control" name="query"></textarea></td>
+                                                        <td>Call Type: *</td> 
+                                                        <td><select class="form-control" name="main_disp" id="main_disp">
+                                                                <option value="">--Select--</option>
+                                                                <option value="Query">Query</option>
+                                                                <option value="Complaint">Complaint</option>
+                                                                <option value="Sales Lead">Sales Lead</option>
+                                                            </select>
+                                                        </td> 
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Call Source: *</td>
+                                                        <td><select class="form-control" name="source">
+                                                            <option value="">Select</option>
+                                                            <option value="TV Ads">TV Ads</option>
+                                                            <option value="Posters / Banners">Posters / Banners</option>
+                                                            <option value="Social Media">Social Media</option>
+                                                            <option value="Website">Website</option>
+                                                            <option value="Dhanuka Staff">Dhanuka Staff</option>
+                                                            <option value="Other Farmer">Other Farmer</option>
+                                                            <option value="Others">Others</option>
+                                                        </select></td>
+                                                        <td class="complaint">Solution Replied:</td> 
+                                                        <td class="complaint"><textarea class="form-control" name="solution" id="solution"></textarea> 
+                                                        </td>
+                                                    {/* <td>Issue Raised: *</td> 
+                                                        <td><select class="form-control" name="issue" id="issue">
+                                                                <option value="">--Select--</option>
+                                                            </select>
+                                                        </td> */}
+                                                    </tr>
+                                                    <tr class="question" >
+                                                        <td>For which crop</td>
+                                                        <td colSpan="3"><input type="text" class="form-control" name="question2" /></td>
+                                                    </tr> 
+                                                    <tr class="question" >
+                                                        <td>Which product</td>
+                                                        <td colSpan="3"><input type="text" class="form-control" name="question1" /></td>
+                                                    </tr>
+                                                    <tr class="question" >
+                                                        <td>What do he want to treat- Disease</td>
+                                                        <td colSpan="3"><input type="text" class="form-control" name="question3" /></td>
+                                                    </tr>
+                                                    {/* <tr class="question">
+                                                        <td>Question No 4</td>
+                                                        <td><input type="text" class="form-control" name="question4" /></td>
+                                                    </tr>
+                                                    <tr class="question">
+                                                        <td>Question No 5</td>
+                                                        <td><input type="text" class="form-control" name="question5" /></td>
+                                                    </tr>*/}
+                                                    <tr>
+                                                        <td>Which Department:</td>
+                                                        <td><select class="form-control" name="department">
+                                                            <option value="">Select</option>
+                                                                                                    <option value="3">Department 1</option>
+                                                                                                    <option value="4">Department 2</option>
+                                                                                                </select></td>
+                                                        <td>Status:</td>
+                                                        <td><select class="form-control" id="status" name="status">
+                                                            <option value="Open">Open</option>
+                                                            <option value="Closed">Closed</option>
+                                                        </select></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Remarks</td> 
+                                                        <td colSpan="3"><textarea class="form-control" id="remarks" name="remarks"></textarea></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Upload Image/Video</td>
+                                                        <td colSpan="3"><input type="file" class="form-control" name="files[]" multiple="" /><pre>(Max. 45 MB Files Upload)</pre></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+            {/* </FullScreen> */}
+        </div>
+    )
+}
+
+export default Dashboard
